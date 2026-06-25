@@ -34,7 +34,6 @@ You can pass one or multiple card numbers.
 cardcheck 4532015112830366
 cardcheck 4532015112830366 5105105105105100
 
-
 ```
 ---
 
@@ -53,13 +52,22 @@ cardcheck --help
 
 For each card number, the program prints whether it is:
 
-- VALID (passes Luhn + IIN checks)
-- INVALID (fails validation)
+- VALID : ✅(passes Luhn + IIN checks)
+- INVALID : ❌ (fails validation)
 
 ### Example output
 
-4532015112830366 -> VALID (Visa)
-5105105105105100 -> INVALID
+4111111111111111 -> 
+Sum : 30
+✅ Passed the Luhn algorithm.
+🏦Card Issuer :  Visa
+✅Correct Credit card format. 
+
+510510510510510 ->
+Credit Card numbers : 510510510510510
+Sum : 25
+❌Number is not valid
+
 
 ---
 

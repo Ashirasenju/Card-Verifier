@@ -41,20 +41,19 @@ int luhn_algorithm(char *number, int number_len) {
   for (int i = number_len - 2; i >= 0; i--) {
     char current_char = number[i];
     if (is_a_number(current_char)) {
-      if (is_a_number(current_char)) {
-        if (i % 2 == 0) {
-          int pre_value = (current_char - '0') * 2;
+      if ((number_len - 1 - i) % 2 == 1) {
 
-          if (pre_value > 9) {
-            pre_value -= 9;
-          }
-          values[i] = pre_value;
-        } else {
-          values[i] = current_char - '0';
+        int pre_value = (current_char - '0') * 2;
+
+        if (pre_value > 9) {
+          pre_value -= 9;
         }
+        values[i] = pre_value;
       } else {
-        return EXIT_FAILURE;
+        values[i] = current_char - '0';
       }
+    } else {
+      return EXIT_FAILURE;
     }
   }
 
@@ -72,7 +71,7 @@ int luhn_algorithm(char *number, int number_len) {
 
 int check_mastercard(char *credit_card_number, int len_credit_card_number) {
   if (len_credit_card_number != 16) {
-    return 0;
+    return EXIT_FAILURE;
   }
   int in_first_two_numbers =
       (credit_card_number[0] - '0') * 10 + (credit_card_number[1] - '0');
@@ -82,7 +81,7 @@ int check_mastercard(char *credit_card_number, int len_credit_card_number) {
                               credit_card_number[3] - '0';
   if ((in_first_two_numbers >= 51 && in_first_two_numbers <= 55) ||
       (in_first_four_numbers >= 2221 && in_first_four_numbers <= 2720)) {
-    puts("🏦Card Issuer : Mastercard");
+    puts("🏦Card Issuer : Mastercard\n");
 
     return EXIT_SUCCESS;
   }
@@ -95,7 +94,7 @@ int check_amex(char *credit_card_number, int len_credit_card_number) {
   int in_first_two_numbers =
       (credit_card_number[0] - '0') * 10 + (credit_card_number[1] - '0');
   if (in_first_two_numbers >= 34 && in_first_two_numbers <= 37) {
-    puts("🏦Card Issuer :  American Express");
+    puts("🏦Card Issuer :  American Express\n");
     return EXIT_SUCCESS;
   }
   return EXIT_FAILURE;
@@ -104,15 +103,16 @@ int check_visa(char *credit_card_number, int len_credit_card_number) {
   if ((len_credit_card_number == 13 || len_credit_card_number == 16 ||
        len_credit_card_number == 19) &&
       credit_card_number[0] == '4') {
-    puts("🏦Card Issuer :  Visa");
+    puts("🏦Card Issuer :  Visa\n");
     return EXIT_SUCCESS;
   }
   return EXIT_FAILURE;
 }
 int check_valid_iin(char *credit_card_number, int len_credit_card_number) {
-  if (check_visa(credit_card_number, len_credit_card_number) ||
-      check_amex(credit_card_number, len_credit_card_number) ||
-      check_mastercard(credit_card_number, len_credit_card_number)) {
+  if (check_visa(credit_card_number, len_credit_card_number) == EXIT_SUCCESS ||
+      check_amex(credit_card_number, len_credit_card_number) == EXIT_SUCCESS ||
+      check_mastercard(credit_card_number, len_credit_card_number) ==
+          EXIT_SUCCESS) {
 
     return EXIT_SUCCESS;
   }
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
       if (iin_status == EXIT_SUCCESS) {
         printf("✅Correct Credit card format.\n");
       } else {
-        printf("❌Card network not recognized");
+        printf("❌Card network not recognized.\n");
       }
     } else {
       printf("❌Number is not valid\n\n");
