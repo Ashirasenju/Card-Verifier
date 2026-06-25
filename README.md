@@ -75,4 +75,4 @@ Sum : 25
 ## Notes
 
 - Only numeric card inputs are supported.
-- Spaces or dashes should be removed before input (if not handled in code).
+- Spaces or dashes should be removed before input .
