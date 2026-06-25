@@ -127,28 +127,29 @@ int main(int argc, char *argv[]) {
     print_help();
     return EXIT_SUCCESS;
   }
-  char *credit_card_number = argv[1];
-  int len_credit_card_number = strlen(credit_card_number);
-  if (len_credit_card_number < 12 || len_credit_card_number > 20) {
-    printf("❌Wrong format.\n");
-    return EXIT_FAILURE;
-  }
-
-  int status = luhn_algorithm(credit_card_number, len_credit_card_number);
-  if (status == EXIT_SUCCESS) {
-    printf("✅ Passed the Luhn algorithm.\n");
-
-    int iin_status =
-        check_valid_iin(credit_card_number, len_credit_card_number);
-    if (iin_status == EXIT_SUCCESS) {
-      printf("✅Correct Credit card format.\n");
-      return EXIT_SUCCESS;
-    } else {
-      printf("❌Card network not recognized");
+  for (int i = 1; i < argc; i++) {
+    char *credit_card_number = argv[i];
+    printf("Credit Card numbers : %s\n", credit_card_number);
+    int len_credit_card_number = strlen(credit_card_number);
+    if (len_credit_card_number < 12 || len_credit_card_number > 20) {
+      printf("❌Wrong format.\n\n");
       return EXIT_FAILURE;
     }
-  } else {
-    printf("✅Number is not valid\n");
-    return EXIT_SUCCESS;
+
+    int status = luhn_algorithm(credit_card_number, len_credit_card_number);
+    if (status == EXIT_SUCCESS) {
+      printf("✅ Passed the Luhn algorithm.\n");
+
+      int iin_status =
+          check_valid_iin(credit_card_number, len_credit_card_number);
+      if (iin_status == EXIT_SUCCESS) {
+        printf("✅Correct Credit card format.\n");
+      } else {
+        printf("❌Card network not recognized");
+      }
+    } else {
+      printf("❌Number is not valid\n\n");
+    }
   }
+  return EXIT_SUCCESS;
 }
