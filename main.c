@@ -27,36 +27,38 @@ void print_help(void) {
 
 int is_a_number(char c) { return (c >= '0' && c <= '9'); }
 
-int sum_values(int value[]) {
+int sum_values(int value[], int sum_values) {
   int sum = 0;
-  for (int i = 0; i < 16; i++) {
+  for (int i = 0; i < sum_values; i++) {
     sum = sum + value[i];
   }
   return sum;
 }
 
 int luhn_algorithm(char *number, int number_len) {
-  int key = number[number_len--] - '0';
-  int *values = malloc(sizeof(int) * number_len);
-  for (int i = number_len - 2; i > 0; i--) {
+  int key = number[number_len - 1] - '0';
+  int *values = calloc(number_len, sizeof(int));
+  for (int i = number_len - 2; i >= 0; i--) {
     char current_char = number[i];
     if (is_a_number(current_char)) {
-      if (i % 2 == 0) {
-        int pre_value = (current_char - '0') * 2;
+      if (is_a_number(current_char)) {
+        if (i % 2 == 0) {
+          int pre_value = (current_char - '0') * 2;
 
-        if (pre_value > 9) {
-          pre_value -= 9;
+          if (pre_value > 9) {
+            pre_value -= 9;
+          }
+          values[i] = pre_value;
+        } else {
+          values[i] = current_char - '0';
         }
-        values[i] = pre_value;
+      } else {
+        return EXIT_FAILURE;
       }
-      values[i] = current_char - '0';
-
-    } else {
-      return EXIT_FAILURE;
     }
   }
 
-  int sum = sum_values(values) + key;
+  int sum = sum_values(values, number_len) + key;
   printf("Sum : %i\n", sum);
   if (sum % 10 == 0) {
     free(values);

@@ -30,10 +30,12 @@ cardcheck [OPTIONS] <card_number...>
 You can pass one or multiple card numbers.
 
 ### Examples
-
+```
 cardcheck 4532015112830366
 cardcheck 4532015112830366 5105105105105100
 
+
+```
 ---
 
 ## Options
